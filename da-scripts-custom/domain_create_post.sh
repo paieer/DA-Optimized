@@ -33,7 +33,8 @@ DS_USERNAME=`ReadINIfile DS_USERNAME`
 DS_PASSWORD=`ReadINIfile DS_PASSWORD`
 
 RESULT="$(curl -s -d "action=exists&domain=${DOMAINNAME}" -u "${DS_USERNAME}:${DS_PASSWORD}" "${DS_URL}/CMD_API_DNS_ADMIN")"
-if [ -z `echo $RESULT |grep 'error=0&exists=1'` ]; then
+DIRECTADMINVER=`/usr/local/directadmin/directadmin v | awk '{print $3}' | cut -d. -f2,3`
+if [ -z `echo $RESULT |grep 'error=0&exists=1'` ] && [ $DIRECTADMINVER == '1.62' ]; then
     # not exists
     curl -s -o /dev/null -d "action=rawsave&domain=${DOMAINNAME}&hostname=${HOSTNS}" -u "${DS_USERNAME}:${DS_PASSWORD}" "${DS_URL}/CMD_API_DNS_ADMIN"
 else
