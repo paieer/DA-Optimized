@@ -24,6 +24,7 @@ else
 fi
 
 MXA="txtrecs0=name=${DOMAINNAME}.&${SFPMX}"
+DIRECTADMINVER=`/usr/local/directadmin/directadmin v | awk '{print $3}' | cut -d. -f2,3`
 
 if [ $DIRECTADMINVER == '1.62' ]; then
     RESULT="$(curl -s -o /dev/null --data-urlencode "${MXA}" --data-urlencode "${NEWSFP}" --user "${DA_USERNAME}:${DA_PASSWORD}" "${DA_URL}/CMD_API_DNS_ADMIN?domain=${DOMAINNAME}&action=edit&type=TXT&name=${DOMAINNAME}.&json=yes")"
@@ -34,7 +35,7 @@ DS_USERNAME=`ReadINIfile DS_USERNAME`
 DS_PASSWORD=`ReadINIfile DS_PASSWORD`
 
 RESULT="$(curl -s -d "action=exists&domain=${DOMAINNAME}" -u "${DS_USERNAME}:${DS_PASSWORD}" "${DS_URL}/CMD_API_DNS_ADMIN")"
-DIRECTADMINVER=`/usr/local/directadmin/directadmin v | awk '{print $3}' | cut -d. -f2,3`
+
 if [ -z `echo $RESULT |grep 'error=0&exists=1'` ]; then
     # not exists
     curl -s -o /dev/null -d "action=rawsave&domain=${DOMAINNAME}&hostname=${HOSTNS}" -u "${DS_USERNAME}:${DS_PASSWORD}" "${DS_URL}/CMD_API_DNS_ADMIN"
