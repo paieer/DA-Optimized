@@ -24,9 +24,8 @@ else
 fi
 
 MXA="txtrecs0=name=${DOMAINNAME}.&${SFPMX}"
-DIRECTADMINVER=`/usr/local/directadmin/directadmin v | awk '{print $3}' | cut -d. -f2,3`
 
-if [ $DIRECTADMINVER == '1.62' ]; then
+if [ `/usr/local/directadmin/directadmin v | awk '{print $3}' | cut -d. -f2,3` == '1.62' ]; then
     RESULT="$(curl -s -o /dev/null --data-urlencode "${MXA}" --data-urlencode "${NEWSFP}" --user "${DA_USERNAME}:${DA_PASSWORD}" "${DA_URL}/CMD_API_DNS_ADMIN?domain=${DOMAINNAME}&action=edit&type=TXT&name=${DOMAINNAME}.&json=yes")"
 fi
 # https://forum.directadmin.com/threads/how-to-get-list-of-all-domains.30997
